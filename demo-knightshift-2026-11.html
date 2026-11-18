@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knightshift · November 2026 · Chess Wrapped</title>
+<style>
+:root{color-scheme:dark;--ink:#f0e6d8;--muted:#bdb0a1;--gold:#c5a373;--panel:#25211e;--line:#40362e}
+*{box-sizing:border-box}
+body{margin:0;background:#191614;color:var(--ink);font:16px system-ui,sans-serif}
+main{max-width:1060px;margin:auto;padding:28px 24px 38px}
+header,footer{display:flex;justify-content:space-between;gap:1rem;align-items:center}
+header{border-bottom:1px solid var(--line);padding-bottom:18px;font-weight:700}
+header span:last-child,footer{color:var(--muted);font-size:.8rem}
+.hero{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(120deg,#3c2e24,#28211c);color:var(--ink);border-radius:24px;padding:clamp(24px,6vw,64px);margin:24px 0 16px}
+.hero::after{content:"";position:absolute;z-index:-1;width:360px;height:360px;right:-100px;top:-130px;transform:rotate(-22deg);background:repeating-conic-gradient(#d9bd9422 0% 25%,transparent 0% 50%) 0/72px 72px;mask-image:linear-gradient(120deg,transparent,#000)}
+h1{font:500 clamp(2.7rem,8vw,6rem)/.96 Georgia,serif;letter-spacing:-.06em;margin:12px 0}
+.hero h1,.hero small{color:var(--gold)}
+.hero p{margin:0;font-weight:700;overflow-wrap:anywhere}
+.hero small{text-transform:uppercase;letter-spacing:.15em;font-weight:800}
+.tiles,.details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tile,article{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}
+.tile strong{display:block;color:var(--gold);font-size:clamp(1.3rem,4vw,2.6rem);line-height:1.1}
+.tile span{display:block;color:var(--muted);font-size:.82rem;margin-top:7px}
+.activity{margin:12px 0}
+h2{font-size:1rem;margin:0 0 12px}
+.chart{height:130px;display:flex;gap:clamp(2px,.7vw,8px);padding:0 0 20px}
+.bar{flex:1;min-width:0;position:relative;display:flex;align-items:flex-end;background:#342b24;border-radius:4px}
+.bar span{width:100%;background:linear-gradient(#c5a373,#92714f);border-radius:4px}
+.bar small{position:absolute;left:50%;transform:translateX(-50%);bottom:-19px;color:var(--muted);font-size:clamp(.5rem,1.6vw,.7rem)}
+ul{margin:0;padding:0;list-style:none}
+li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem}
+li strong{color:var(--ink)}
+footer{margin-top:20px}
+@media(max-width:560px){main{padding:20px 12px}.details{grid-template-columns:1fr}.tile{padding:12px}.tile span{font-size:.72rem}}
+@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.report-highlights{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-top:12px}
+.report-highlights h3{font-size:.85rem;margin:0 0 8px}
+.report-highlights p,.calendar-legend{font-size:.86rem;color:var(--muted)}
+.opening-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.upset-gap{font-size:1.45rem;color:var(--gold)}
+.report-highlights a{color:var(--gold);text-underline-offset:.2em}
+.chess-calendar{grid-column:1/-1}
+.calendar-months{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:14px}
+.calendar-month{max-width:230px;width:100%}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center;font-size:.7rem;color:var(--muted)}
+.calendar-day{display:grid;place-items:center;min-height:20px;border-radius:3px;color:var(--ink)}
+.calendar-legend{display:flex;gap:4px;align-items:center;margin-top:12px}
+.calendar-legend span{display:inline-block;width:12px;height:12px;border-radius:2px}
+.level-0{background:#352d26}
+.level-1{background:#574533}
+.level-2{background:#71563c;color:var(--ink)}
+.level-3{background:#a78961;color:#19130e}
+.level-4{background:var(--gold);color:#19130e}
+@media(max-width:680px){.report-highlights{grid-template-columns:1fr}}
+.performance{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-top:12px}
+.performance h3{font-size:.86rem;margin:0 0 6px}
+.performance p,.rating-dates,.opening-score span{font-size:.83rem;color:var(--muted)}
+.rating-journey{grid-column:1/-1}
+.rating-series-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,195px),1fr));gap:12px}
+.rating-series{padding:12px;border:1px solid var(--line);border-radius:10px}
+.rating-change{display:inline-block;margin-left:5px;color:var(--gold);font-size:.8rem}
+.rating-series svg{display:block;width:100%;margin:6px 0;color:var(--gold)}
+.rating-series polyline{fill:none;stroke:currentColor;stroke-width:1.5;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.rating-series circle{fill:currentColor}
+.performance-leader{font-size:1.3rem;color:var(--gold);overflow-wrap:anywhere}
+.opening-score{text-align:right;flex-shrink:0}
+.opening-score span{display:block}
+.opening-best{display:block;color:var(--gold);font-size:.76rem}
+.opening-replays a{color:var(--gold);display:inline-block;margin:4px 8px 0 0;font-size:.76rem;text-underline-offset:.15em}
+@media(max-width:680px){.performance{grid-template-columns:1fr}.opening-score{white-space:normal;max-width:45%}}
+.rating-milestones{margin-top:10px;border-top:1px solid var(--line);padding-top:9px;font-size:.82rem}
+.rating-milestones summary{cursor:pointer;color:var(--gold);font-weight:650}
+.rating-milestones ul{margin-top:8px}
+.rating-milestones li span,.rating-milestones li a{display:block;margin-top:3px;overflow-wrap:anywhere}
+.rating-milestones a{color:var(--gold);text-underline-offset:.18em}
+</style>
+</head>
+<body>
+<main>
+<header><span>♞ Chess Wrapped</span><span>Sample data</span></header>
+<section class="hero"><small>Month in chess</small><h1>November 2026</h1><p>@Knightshift</p></section>
+
+<section class="tiles" aria-label="Highlights"><div class="tile"><strong>28</strong><span>Games played</span></div><div class="tile"><strong>50%</strong><span>Win rate</span></div><div class="tile"><strong>3</strong><span>Best win streak</span></div></section>
+<article class="activity"><h2>Games played over time</h2><div class="chart"><div class="bar" title="1: 1 games"><span style="height:33.33%"></span><small>1</small></div><div class="bar" title="2: 1 games"><span style="height:33.33%"></span><small></small></div><div class="bar" title="3: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="4: 1 games"><span style="height:33.33%"></span><small></small></div><div class="bar" title="5: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="6: 2 games"><span style="height:66.67%"></span><small>6</small></div><div class="bar" title="7: 1 games"><span style="height:33.33%"></span><small></small></div><div class="bar" title="8: 1 games"><span style="height:33.33%"></span><small></small></div><div class="bar" title="9: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="10: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="11: 1 games"><span style="height:33.33%"></span><small>11</small></div><div class="bar" title="12: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="13: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="14: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="15: 1 games"><span style="height:33.33%"></span><small></small></div><div class="bar" title="16: 2 games"><span style="height:66.67%"></span><small>16</small></div><div class="bar" title="17: 1 games"><span style="height:33.33%"></span><small></small></div><div class="bar" title="18: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="19: 3 games"><span style="height:100.00%"></span><small></small></div><div class="bar" title="20: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="21: 1 games"><span style="height:33.33%"></span><small>21</small></div><div class="bar" title="22: 2 games"><span style="height:66.67%"></span><small></small></div><div class="bar" title="23: 2 games"><span style="height:66.67%"></span><small></small></div><div class="bar" title="24: 1 games"><span style="height:33.33%"></span><small></small></div><div class="bar" title="25: 1 games"><span style="height:33.33%"></span><small></small></div><div class="bar" title="26: 0 games"><span style="height:0.00%"></span><small>26</small></div><div class="bar" title="27: 2 games"><span style="height:66.67%"></span><small></small></div><div class="bar" title="28: 1 games"><span style="height:33.33%"></span><small></small></div><div class="bar" title="29: 1 games"><span style="height:33.33%"></span><small></small></div><div class="bar" title="30: 2 games"><span style="height:66.67%"></span><small>30</small></div></div></article>
+<section class="details">
+<article><h2>Results</h2><ul><li>Wins<strong>14</strong></li><li>Losses<strong>11</strong></li><li>Draws<strong>3</strong></li></ul></article>
+<article><h2>Time controls</h2><ul><li>Blitz<strong>13</strong></li><li>Bullet<strong>9</strong></li><li>Rapid<strong>6</strong></li></ul></article>
+<article><h2>Peak rated-game rating</h2><ul><li>Blitz<strong>1,550</strong></li><li>Bullet<strong>1,533</strong></li><li>Rapid<strong>1,552</strong></li></ul></article>
+</section>
+
+    <section class="report-highlights">
+      <article><h2>Opening repertoire</h2><div class="opening-columns">
+        <div><h3>First moves as White</h3><ul><li>1.e4<strong>14</strong></li></ul></div>
+        <div><h3>Replies as Black</h3><ul><li>1.Nf3 → 1…d5<strong>7</strong></li><li>1.d4 → 1…Nf6<strong>7</strong></li></ul></div>
+      </div></article>
+      <article><h2>Biggest upset</h2><strong class="upset-gap">115 rating points</strong><p>Beat @QuietBishop · 1419 vs 1534 · Nov 17</p></article>
+      <article class="chess-calendar"><h2>Chess calendar</h2><p>20 active days · Busiest Nov 19 (3 games) · Longest streak 5 days</p>
+        <div class="calendar-months"><div class="calendar-month"><h3>Nov</h3><div class="calendar-grid"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-day level-2" role="img" aria-label="Nov 1 · 1 game" title="Nov 1 · 1 game">1</span><span class="calendar-day level-2" role="img" aria-label="Nov 2 · 1 game" title="Nov 2 · 1 game">2</span><span class="calendar-day level-0" role="img" aria-label="Nov 3 · 0 games" title="Nov 3 · 0 games">3</span><span class="calendar-day level-2" role="img" aria-label="Nov 4 · 1 game" title="Nov 4 · 1 game">4</span><span class="calendar-day level-0" role="img" aria-label="Nov 5 · 0 games" title="Nov 5 · 0 games">5</span><span class="calendar-day level-3" role="img" aria-label="Nov 6 · 2 games" title="Nov 6 · 2 games">6</span><span class="calendar-day level-2" role="img" aria-label="Nov 7 · 1 game" title="Nov 7 · 1 game">7</span><span class="calendar-day level-2" role="img" aria-label="Nov 8 · 1 game" title="Nov 8 · 1 game">8</span><span class="calendar-day level-0" role="img" aria-label="Nov 9 · 0 games" title="Nov 9 · 0 games">9</span><span class="calendar-day level-0" role="img" aria-label="Nov 10 · 0 games" title="Nov 10 · 0 games">10</span><span class="calendar-day level-2" role="img" aria-label="Nov 11 · 1 game" title="Nov 11 · 1 game">11</span><span class="calendar-day level-0" role="img" aria-label="Nov 12 · 0 games" title="Nov 12 · 0 games">12</span><span class="calendar-day level-0" role="img" aria-label="Nov 13 · 0 games" title="Nov 13 · 0 games">13</span><span class="calendar-day level-0" role="img" aria-label="Nov 14 · 0 games" title="Nov 14 · 0 games">14</span><span class="calendar-day level-2" role="img" aria-label="Nov 15 · 1 game" title="Nov 15 · 1 game">15</span><span class="calendar-day level-3" role="img" aria-label="Nov 16 · 2 games" title="Nov 16 · 2 games">16</span><span class="calendar-day level-2" role="img" aria-label="Nov 17 · 1 game" title="Nov 17 · 1 game">17</span><span class="calendar-day level-0" role="img" aria-label="Nov 18 · 0 games" title="Nov 18 · 0 games">18</span><span class="calendar-day level-4" role="img" aria-label="Nov 19 · 3 games" title="Nov 19 · 3 games">19</span><span class="calendar-day level-0" role="img" aria-label="Nov 20 · 0 games" title="Nov 20 · 0 games">20</span><span class="calendar-day level-2" role="img" aria-label="Nov 21 · 1 game" title="Nov 21 · 1 game">21</span><span class="calendar-day level-3" role="img" aria-label="Nov 22 · 2 games" title="Nov 22 · 2 games">22</span><span class="calendar-day level-3" role="img" aria-label="Nov 23 · 2 games" title="Nov 23 · 2 games">23</span><span class="calendar-day level-2" role="img" aria-label="Nov 24 · 1 game" title="Nov 24 · 1 game">24</span><span class="calendar-day level-2" role="img" aria-label="Nov 25 · 1 game" title="Nov 25 · 1 game">25</span><span class="calendar-day level-0" role="img" aria-label="Nov 26 · 0 games" title="Nov 26 · 0 games">26</span><span class="calendar-day level-3" role="img" aria-label="Nov 27 · 2 games" title="Nov 27 · 2 games">27</span><span class="calendar-day level-2" role="img" aria-label="Nov 28 · 1 game" title="Nov 28 · 1 game">28</span><span class="calendar-day level-2" role="img" aria-label="Nov 29 · 1 game" title="Nov 29 · 1 game">29</span><span class="calendar-day level-3" role="img" aria-label="Nov 30 · 2 games" title="Nov 30 · 2 games">30</span></div></div></div>
+        <div class="calendar-legend">Fewer games <span class="level-0"></span><span class="level-1"></span><span class="level-2"></span><span class="level-3"></span><span class="level-4"></span> More games</div>
+      </article>
+    </section>
+<section class="performance">
+      <article class="rating-journey"><h2>Rating journey</h2><p>Ratings recorded in your first and last rated games for each time control.</p><div class="rating-series-grid"><div class="rating-series"><h3>Blitz</h3>
+      <strong>1,321 → 1,543</strong><span class="rating-change">+222 points</span>
+      <svg viewBox="0 0 300 72" role="img" aria-label="Rating chart, low 1321, high 1550">
+        <polyline points="4.0,66.0 14.1,57.1 34.2,37.2 54.3,7.0 74.5,34.6 145.0,53.7 185.2,63.4 185.2,8.1 205.4,11.0 215.4,17.0 275.9,51.3 285.9,6.0 296.0,7.8"/></svg>
+      <span class="rating-dates">Nov 1 – Nov 30 · 13 rated games</span>
+      <details class="rating-milestones"><summary>Milestone games</summary><ul><li><div><strong>First · 1,321</strong><span>Nov 1 · Win · vs @RookFan</span></div></li><li><div><strong>Peak rating · 1,550</strong><span>Nov 29 · Loss · vs @CastleClub</span></div></li><li><div><strong>Last · 1,543</strong><span>Nov 30 · Loss · vs @RookFan</span></div></li></ul></details></div><div class="rating-series"><h3>Bullet</h3>
+      <strong>1,340 → 1,305</strong><span class="rating-change">-35 points</span>
+      <svg viewBox="0 0 300 72" role="img" aria-label="Rating chart, low 1305, high 1533">
+        <polyline points="4.0,56.8 125.7,6.0 125.7,27.1 198.7,59.7 210.8,49.7 210.8,9.4 235.2,21.3 259.5,17.6 296.0,66.0"/></svg>
+      <span class="rating-dates">Nov 6 – Nov 30 · 9 rated games</span>
+      <details class="rating-milestones"><summary>Milestone games</summary><ul><li><div><strong>First · 1,340</strong><span>Nov 6 · Win · vs @RookFan</span></div></li><li><div><strong>Peak rating · 1,533</strong><span>Nov 16 · Loss · vs @QuietBishop</span></div></li><li><div><strong>Last · 1,305</strong><span>Nov 30 · Loss · vs @CastleClub</span></div></li></ul></details></div><div class="rating-series"><h3>Rapid</h3>
+      <strong>1,396 → 1,541</strong><span class="rating-change">+145 points</span>
+      <svg viewBox="0 0 300 72" role="img" aria-label="Rating chart, low 1347, high 1552">
+        <polyline points="4.0,51.7 62.4,6.0 150.0,44.9 179.2,47.9 252.2,66.0 296.0,9.2"/></svg>
+      <span class="rating-dates">Nov 7 – Nov 27 · 6 rated games</span>
+      <details class="rating-milestones"><summary>Milestone games</summary><ul><li><div><strong>First · 1,396</strong><span>Nov 7 · Win · vs @QuietBishop</span></div></li><li><div><strong>Peak rating · 1,552</strong><span>Nov 11 · Win · vs @RookFan</span></div></li><li><div><strong>Last · 1,541</strong><span>Nov 27 · Loss · vs @QuietBishop</span></div></li></ul></details></div></div></article>
+      <article><h2>Your chess nemesis</h2><strong class="performance-leader">@RookFan</strong><p>10 games against your most-played opponent</p><p>6W · 2L · 2D</p></article>
+      <article><h2>Opening report card</h2><p>Best win rate requires at least 5 games with the same opening and color.</p><ul><li><div><strong>Indian Game</strong> <span>as Black</span>
+          <div class="opening-replays"></div></div>
+          <div class="opening-score"><strong>57%</strong><span>4W · 3L · 0D · 7 games</span></div></li><li><div><strong>King’s Pawn Game</strong> <span>as White</span>
+          <div class="opening-replays"></div></div>
+          <div class="opening-score"><strong>57%</strong><span>4W · 2L · 1D · 7 games</span></div></li><li><div><strong>Réti Opening</strong> <span>as Black</span>
+          <span class="opening-best">Best win rate</span><div class="opening-replays"></div></div>
+          <div class="opening-score"><strong>71%</strong><span>5W · 2L · 0D · 7 games</span></div></li><li><div><strong>Sicilian Defense</strong> <span>as White</span>
+          <div class="opening-replays"></div></div>
+          <div class="opening-score"><strong>14%</strong><span>1W · 4L · 2D · 7 games</span></div></li></ul></article>
+    </section>
+<footer><span>Standard chess · UTC</span><span>Chess Wrapped</span></footer>
+</main>
+</body>
+</html>

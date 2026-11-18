@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chess Wrapped</title><link rel="stylesheet" href="report.css"><style>
+
+form{display:flex;flex-wrap:wrap;align-items:end;gap:12px}
+label{display:grid;gap:6px;font-size:.85rem;font-weight:650}
+input,button{font:inherit;padding:10px 12px;border-radius:9px;border:1px solid var(--line)}
+input{background:var(--panel);color:var(--ink)}
+button{cursor:pointer;background:var(--gold);color:#19130e;font-weight:700}
+button:disabled{opacity:.65;cursor:wait}
+button[aria-pressed="false"]{background:var(--panel);color:var(--ink)}
+#controls[hidden]{display:none}
+#controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#status{color:var(--muted)}
+#examples{margin-top:24px;border-top:1px solid var(--line);padding-top:16px}
+#examples a{display:inline-block;color:var(--gold);margin:8px 16px 0 0}
+#report{margin-top:12px}
+</style></head><body>
+<main>
+<header><span>♞ Chess Wrapped</span><span>Chess.com · UTC</span></header>
+<section class="hero" id="intro"><h1>Chess Wrapped</h1><p>Your month and year on Chess.com</p></section>
+<form id="lookup">
+<label>Chess.com username<input name="username" type="text" required maxlength="64" autocomplete="off" spellcheck="false" placeholder="e.g. Hikaru"></label>
+<label>Report month<input name="month" type="month" required min="2007-01"></label>
+<button type="submit">Generate reports</button>
+</form>
+<p id="status" role="status" aria-live="polite"></p>
+<div id="controls" hidden>
+<button type="button" id="monthly" aria-pressed="true">Monthly</button>
+<button type="button" id="yearly" aria-pressed="false">Yearly</button>
+<button type="button" id="download">Download HTML</button>
+</div>
+<div id="report"></div>
+<details id="examples"><summary>Example reports</summary>
+<a href="demo-knightshift-2026-11.html">Knightshift · November</a>
+<a href="demo-knightshift-2026.html">Knightshift · 2026</a>
+<a href="hikaru-2026-11.html">Hikaru · November</a>
+<a href="hikaru-2026.html">Hikaru · 2026</a>
+</details>
+</main>
+<script type="module" src="app.js"></script>
+</body></html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hikaru · November 2026 · Chess Wrapped</title>
+<style>
+:root{color-scheme:dark;--ink:#f0e6d8;--muted:#bdb0a1;--gold:#c5a373;--panel:#25211e;--line:#40362e}
+*{box-sizing:border-box}
+body{margin:0;background:#191614;color:var(--ink);font:16px system-ui,sans-serif}
+main{max-width:1060px;margin:auto;padding:28px 24px 38px}
+header,footer{display:flex;justify-content:space-between;gap:1rem;align-items:center}
+header{border-bottom:1px solid var(--line);padding-bottom:18px;font-weight:700}
+header span:last-child,footer{color:var(--muted);font-size:.8rem}
+.hero{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(120deg,#3c2e24,#28211c);color:var(--ink);border-radius:24px;padding:clamp(24px,6vw,64px);margin:24px 0 16px}
+.hero::after{content:"";position:absolute;z-index:-1;width:360px;height:360px;right:-100px;top:-130px;transform:rotate(-22deg);background:repeating-conic-gradient(#d9bd9422 0% 25%,transparent 0% 50%) 0/72px 72px;mask-image:linear-gradient(120deg,transparent,#000)}
+h1{font:500 clamp(2.7rem,8vw,6rem)/.96 Georgia,serif;letter-spacing:-.06em;margin:12px 0}
+.hero h1,.hero small{color:var(--gold)}
+.hero p{margin:0;font-weight:700;overflow-wrap:anywhere}
+.hero small{text-transform:uppercase;letter-spacing:.15em;font-weight:800}
+.tiles,.details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tile,article{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}
+.tile strong{display:block;color:var(--gold);font-size:clamp(1.3rem,4vw,2.6rem);line-height:1.1}
+.tile span{display:block;color:var(--muted);font-size:.82rem;margin-top:7px}
+.activity{margin:12px 0}
+h2{font-size:1rem;margin:0 0 12px}
+.chart{height:130px;display:flex;gap:clamp(2px,.7vw,8px);padding:0 0 20px}
+.bar{flex:1;min-width:0;position:relative;display:flex;align-items:flex-end;background:#342b24;border-radius:4px}
+.bar span{width:100%;background:linear-gradient(#c5a373,#92714f);border-radius:4px}
+.bar small{position:absolute;left:50%;transform:translateX(-50%);bottom:-19px;color:var(--muted);font-size:clamp(.5rem,1.6vw,.7rem)}
+ul{margin:0;padding:0;list-style:none}
+li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem}
+li strong{color:var(--ink)}
+footer{margin-top:20px}
+@media(max-width:560px){main{padding:20px 12px}.details{grid-template-columns:1fr}.tile{padding:12px}.tile span{font-size:.72rem}}
+@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.report-highlights{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-top:12px}
+.report-highlights h3{font-size:.85rem;margin:0 0 8px}
+.report-highlights p,.calendar-legend{font-size:.86rem;color:var(--muted)}
+.opening-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.upset-gap{font-size:1.45rem;color:var(--gold)}
+.report-highlights a{color:var(--gold);text-underline-offset:.2em}
+.chess-calendar{grid-column:1/-1}
+.calendar-months{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:14px}
+.calendar-month{max-width:230px;width:100%}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center;font-size:.7rem;color:var(--muted)}
+.calendar-day{display:grid;place-items:center;min-height:20px;border-radius:3px;color:var(--ink)}
+.calendar-legend{display:flex;gap:4px;align-items:center;margin-top:12px}
+.calendar-legend span{display:inline-block;width:12px;height:12px;border-radius:2px}
+.level-0{background:#352d26}
+.level-1{background:#574533}
+.level-2{background:#71563c;color:var(--ink)}
+.level-3{background:#a78961;color:#19130e}
+.level-4{background:var(--gold);color:#19130e}
+@media(max-width:680px){.report-highlights{grid-template-columns:1fr}}
+.performance{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-top:12px}
+.performance h3{font-size:.86rem;margin:0 0 6px}
+.performance p,.rating-dates,.opening-score span{font-size:.83rem;color:var(--muted)}
+.rating-journey{grid-column:1/-1}
+.rating-series-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,195px),1fr));gap:12px}
+.rating-series{padding:12px;border:1px solid var(--line);border-radius:10px}
+.rating-change{display:inline-block;margin-left:5px;color:var(--gold);font-size:.8rem}
+.rating-series svg{display:block;width:100%;margin:6px 0;color:var(--gold)}
+.rating-series polyline{fill:none;stroke:currentColor;stroke-width:1.5;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.rating-series circle{fill:currentColor}
+.performance-leader{font-size:1.3rem;color:var(--gold);overflow-wrap:anywhere}
+.opening-score{text-align:right;flex-shrink:0}
+.opening-score span{display:block}
+.opening-best{display:block;color:var(--gold);font-size:.76rem}
+.opening-replays a{color:var(--gold);display:inline-block;margin:4px 8px 0 0;font-size:.76rem;text-underline-offset:.15em}
+@media(max-width:680px){.performance{grid-template-columns:1fr}.opening-score{white-space:normal;max-width:45%}}
+.rating-milestones{margin-top:10px;border-top:1px solid var(--line);padding-top:9px;font-size:.82rem}
+.rating-milestones summary{cursor:pointer;color:var(--gold);font-weight:650}
+.rating-milestones ul{margin-top:8px}
+.rating-milestones li span,.rating-milestones li a{display:block;margin-top:3px;overflow-wrap:anywhere}
+.rating-milestones a{color:var(--gold);text-underline-offset:.18em}
+</style>
+</head>
+<body>
+<main>
+<header><span>♞ Chess Wrapped</span><span>Chess.com public archives</span></header>
+<section class="hero"><small>Month in chess</small><h1>November 2026</h1><p>@hikaru</p></section>
+
+<section class="tiles" aria-label="Highlights"><div class="tile"><strong>344</strong><span>Games played</span></div><div class="tile"><strong>79%</strong><span>Win rate</span></div><div class="tile"><strong>31</strong><span>Best win streak</span></div></section>
+<article class="activity"><h2>Games played over time</h2><div class="chart"><div class="bar" title="1: 0 games"><span style="height:0.00%"></span><small>1</small></div><div class="bar" title="2: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="3: 18 games"><span style="height:24.00%"></span><small></small></div><div class="bar" title="4: 3 games"><span style="height:4.00%"></span><small></small></div><div class="bar" title="5: 47 games"><span style="height:62.67%"></span><small></small></div><div class="bar" title="6: 5 games"><span style="height:6.67%"></span><small>6</small></div><div class="bar" title="7: 75 games"><span style="height:100.00%"></span><small></small></div><div class="bar" title="8: 21 games"><span style="height:28.00%"></span><small></small></div><div class="bar" title="9: 12 games"><span style="height:16.00%"></span><small></small></div><div class="bar" title="10: 19 games"><span style="height:25.33%"></span><small></small></div><div class="bar" title="11: 6 games"><span style="height:8.00%"></span><small>11</small></div><div class="bar" title="12: 11 games"><span style="height:14.67%"></span><small></small></div><div class="bar" title="13: 3 games"><span style="height:4.00%"></span><small></small></div><div class="bar" title="14: 61 games"><span style="height:81.33%"></span><small></small></div><div class="bar" title="15: 9 games"><span style="height:12.00%"></span><small></small></div><div class="bar" title="16: 27 games"><span style="height:36.00%"></span><small>16</small></div><div class="bar" title="17: 14 games"><span style="height:18.67%"></span><small></small></div><div class="bar" title="18: 13 games"><span style="height:17.33%"></span><small></small></div><div class="bar" title="19: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="20: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="21: 0 games"><span style="height:0.00%"></span><small>21</small></div><div class="bar" title="22: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="23: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="24: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="25: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="26: 0 games"><span style="height:0.00%"></span><small>26</small></div><div class="bar" title="27: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="28: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="29: 0 games"><span style="height:0.00%"></span><small></small></div><div class="bar" title="30: 0 games"><span style="height:0.00%"></span><small>30</small></div></div></article>
+<section class="details">
+<article><h2>Results</h2><ul><li>Wins<strong>272</strong></li><li>Losses<strong>46</strong></li><li>Draws<strong>26</strong></li></ul></article>
+<article><h2>Time controls</h2><ul><li>Blitz<strong>208</strong></li><li>Bullet<strong>136</strong></li></ul></article>
+<article><h2>Peak rated-game rating</h2><ul><li>Blitz<strong>3,481</strong></li><li>Bullet<strong>3,452</strong></li></ul></article>
+</section>
+
+    <section class="report-highlights">
+      <article><h2>Opening repertoire</h2><div class="opening-columns">
+        <div><h3>First moves as White</h3><ul><li>1.e4<strong>78</strong></li><li>1.c4<strong>46</strong></li><li>1.d4<strong>40</strong></li></ul></div>
+        <div><h3>Replies as Black</h3><ul><li>1.d4 → 1…d5<strong>25</strong></li><li>1.e4 → 1…e5<strong>25</strong></li><li>1.d4 → 1…Nf6<strong>22</strong></li></ul></div>
+      </div></article>
+      <article><h2>Biggest upset</h2><strong class="upset-gap">4 rating points</strong><p>Beat @gurelediz · 3403 vs 3407 · Nov 7</p><a href="https://www.chess.com/game/live/188389099053">Replay on Chess.com</a></article>
+      <article class="chess-calendar"><h2>Chess calendar</h2><p>16 active days · Busiest Nov 7 (75 games) · Longest streak 16 days</p>
+        <div class="calendar-months"><div class="calendar-month"><h3>Nov</h3><div class="calendar-grid"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-pad" aria-hidden="true"></span><span class="calendar-day level-0" role="img" aria-label="Nov 1 · 0 games" title="Nov 1 · 0 games">1</span><span class="calendar-day level-0" role="img" aria-label="Nov 2 · 0 games" title="Nov 2 · 0 games">2</span><span class="calendar-day level-1" role="img" aria-label="Nov 3 · 18 games" title="Nov 3 · 18 games">3</span><span class="calendar-day level-1" role="img" aria-label="Nov 4 · 3 games" title="Nov 4 · 3 games">4</span><span class="calendar-day level-3" role="img" aria-label="Nov 5 · 47 games" title="Nov 5 · 47 games">5</span><span class="calendar-day level-1" role="img" aria-label="Nov 6 · 5 games" title="Nov 6 · 5 games">6</span><span class="calendar-day level-4" role="img" aria-label="Nov 7 · 75 games" title="Nov 7 · 75 games">7</span><span class="calendar-day level-2" role="img" aria-label="Nov 8 · 21 games" title="Nov 8 · 21 games">8</span><span class="calendar-day level-1" role="img" aria-label="Nov 9 · 12 games" title="Nov 9 · 12 games">9</span><span class="calendar-day level-2" role="img" aria-label="Nov 10 · 19 games" title="Nov 10 · 19 games">10</span><span class="calendar-day level-1" role="img" aria-label="Nov 11 · 6 games" title="Nov 11 · 6 games">11</span><span class="calendar-day level-1" role="img" aria-label="Nov 12 · 11 games" title="Nov 12 · 11 games">12</span><span class="calendar-day level-1" role="img" aria-label="Nov 13 · 3 games" title="Nov 13 · 3 games">13</span><span class="calendar-day level-4" role="img" aria-label="Nov 14 · 61 games" title="Nov 14 · 61 games">14</span><span class="calendar-day level-1" role="img" aria-label="Nov 15 · 9 games" title="Nov 15 · 9 games">15</span><span class="calendar-day level-2" role="img" aria-label="Nov 16 · 27 games" title="Nov 16 · 27 games">16</span><span class="calendar-day level-1" role="img" aria-label="Nov 17 · 14 games" title="Nov 17 · 14 games">17</span><span class="calendar-day level-1" role="img" aria-label="Nov 18 · 13 games" title="Nov 18 · 13 games">18</span><span class="calendar-day level-0" role="img" aria-label="Nov 19 · 0 games" title="Nov 19 · 0 games">19</span><span class="calendar-day level-0" role="img" aria-label="Nov 20 · 0 games" title="Nov 20 · 0 games">20</span><span class="calendar-day level-0" role="img" aria-label="Nov 21 · 0 games" title="Nov 21 · 0 games">21</span><span class="calendar-day level-0" role="img" aria-label="Nov 22 · 0 games" title="Nov 22 · 0 games">22</span><span class="calendar-day level-0" role="img" aria-label="Nov 23 · 0 games" title="Nov 23 · 0 games">23</span><span class="calendar-day level-0" role="img" aria-label="Nov 24 · 0 games" title="Nov 24 · 0 games">24</span><span class="calendar-day level-0" role="img" aria-label="Nov 25 · 0 games" title="Nov 25 · 0 games">25</span><span class="calendar-day level-0" role="img" aria-label="Nov 26 · 0 games" title="Nov 26 · 0 games">26</span><span class="calendar-day level-0" role="img" aria-label="Nov 27 · 0 games" title="Nov 27 · 0 games">27</span><span class="calendar-day level-0" role="img" aria-label="Nov 28 · 0 games" title="Nov 28 · 0 games">28</span><span class="calendar-day level-0" role="img" aria-label="Nov 29 · 0 games" title="Nov 29 · 0 games">29</span><span class="calendar-day level-0" role="img" aria-label="Nov 30 · 0 games" title="Nov 30 · 0 games">30</span></div></div></div>
+        <div class="calendar-legend">Fewer games <span class="level-0"></span><span class="level-1"></span><span class="level-2"></span><span class="level-3"></span><span class="level-4"></span> More games</div>
+      </article>
+    </section>
+<section class="performance">
+      <article class="rating-journey"><h2>Rating journey</h2><p>Ratings recorded in your first and last rated games for each time control.</p><div class="rating-series-grid"><div class="rating-series"><h3>Blitz</h3>
+      <strong>3,455 → 3,453</strong><span class="rating-change">-2 points</span>
+      <svg viewBox="0 0 300 72" role="img" aria-label="Rating chart, low 3415, high 3481">
+        <polyline points="4.0,29.6 4.1,27.8 4.1,33.3 4.2,31.5 4.3,29.6 4.3,27.8 4.7,27.8 4.9,26.9 5.0,26.0 5.2,24.2 5.4,20.5 5.6,16.9 5.7,20.5 5.9,16.9 6.1,12.4 6.3,22.4 6.4,19.6 8.0,18.7 30.2,17.8 30.3,16.9 30.9,16.0 31.8,14.2 31.8,12.4 31.9,10.5 31.9,8.7 32.6,7.8 32.6,6.9 42.9,6.0 43.0,19.6 43.0,18.7 43.1,17.8 43.2,16.9 43.2,16.0 43.3,29.6 44.9,29.6 45.0,28.7 45.1,26.9 45.2,25.1 45.3,22.4 45.4,18.7 45.6,15.1 45.7,9.6 45.7,13.3 45.9,9.6 46.0,15.1 49.1,15.1 49.2,28.7 49.3,28.7 49.4,27.8 49.5,25.1 49.6,30.5 49.8,28.7 49.8,26.0 50.0,23.3 50.1,26.0 50.1,36.9 50.3,35.1 50.3,47.8 50.4,46.0 50.5,44.2 50.6,42.4 50.6,40.5 50.7,38.7 50.7,36.9 50.8,35.1 50.9,33.3 51.0,31.5 51.1,29.6 67.1,27.8 67.1,26.0 67.2,24.2 67.2,22.4 67.3,20.5 85.6,18.7 85.6,16.9 85.7,15.1 85.7,13.3 85.8,18.7 85.9,24.2 103.8,21.5 103.8,33.3 103.9,44.2 104.0,56.9 104.1,55.1 104.1,53.3 104.2,66.0 104.2,64.2 104.3,62.4 104.3,60.5 104.4,58.7 104.4,56.9 104.5,55.1 104.5,53.3 104.6,58.7 104.7,57.8 104.8,56.9 110.0,55.1 110.1,53.3 110.2,51.5 110.2,49.6 129.4,47.8 129.5,46.0 129.5,44.2 129.6,42.4 129.6,40.5 129.7,38.7 129.8,36.9 129.8,35.1 129.9,33.3 130.0,31.5 130.9,30.5 130.9,29.6 143.1,27.8 143.2,26.0 143.3,24.2 144.8,22.4 144.9,20.5 145.0,18.7 145.1,16.9 145.2,15.1 145.6,15.1 145.7,14.2 145.9,13.3 146.1,11.5 146.3,8.7 146.5,20.5 146.6,18.7 146.8,15.1 147.0,26.0 147.2,23.3 147.4,21.5 155.4,19.6 155.5,17.8 155.6,16.0 166.7,14.2 166.8,12.4 166.8,10.5 185.8,10.5 185.9,9.6 186.0,8.7 186.1,7.8 186.2,6.0 186.3,10.5 186.5,21.5 186.6,18.7 186.7,29.6 186.8,27.8 186.9,26.0 193.6,24.2 193.6,22.4 193.7,20.5 246.9,32.4 247.0,29.6 247.1,42.4 247.2,39.6 247.3,36.9 247.3,34.2 247.3,31.5 247.4,28.7 247.4,26.0 264.1,24.2 264.2,22.4 264.2,20.5 264.9,17.8 264.9,29.6 265.0,26.9 265.1,38.7 267.3,42.4 267.5,37.8 267.6,34.2 267.8,45.1 268.1,40.5 268.3,36.9 268.4,47.8 268.7,50.5 268.8,46.0 268.9,41.5 269.0,52.4 269.2,47.8 269.3,43.3 269.4,38.7 277.2,36.9 277.2,35.1 283.7,34.2 286.5,34.2 286.6,33.3 286.8,39.6 287.0,39.6 287.2,38.7 287.4,36.9 287.6,35.1 287.7,32.4 287.9,36.0 288.1,30.5 288.3,33.3 293.7,31.5 293.8,29.6 293.8,42.4 293.9,40.5 293.9,38.7 294.0,36.9 294.0,35.1 294.1,33.3 295.7,30.5 295.8,42.4 295.9,38.7 295.9,35.1 296.0,31.5"/></svg>
+      <span class="rating-dates">Nov 3 – Nov 18 · 208 rated games</span>
+      <details class="rating-milestones"><summary>Milestone games</summary><ul><li><div><strong>First · 3,455</strong><span>Nov 3 · Win · vs @carokannlover213</span><a href="https://www.chess.com/game/live/186466981288">Replay on Chess.com</a></div></li><li><div><strong>Peak rating · 3,481</strong><span>Nov 5 · Win · vs @dinhnhokiet</span><a href="https://www.chess.com/game/live/186588149520">Replay on Chess.com</a></div></li><li><div><strong>Last · 3,453</strong><span>Nov 18 · Win · vs @wonderfultime</span><a href="https://www.chess.com/game/live/187449086922">Replay on Chess.com</a></div></li></ul></details></div><div class="rating-series"><h3>Bullet</h3>
+      <strong>3,393 → 3,402</strong><span class="rating-change">+9 points</span>
+      <svg viewBox="0 0 300 72" role="img" aria-label="Rating chart, low 3392, high 3452">
+        <polyline points="4.0,65.0 4.0,65.0 4.1,64.0 4.1,64.0 4.2,64.0 4.2,59.0 4.2,53.0 4.3,65.0 4.3,63.0 4.3,57.0 4.4,56.0 4.4,52.0 4.4,52.0 4.5,46.0 4.5,41.0 4.5,33.0 4.6,29.0 4.6,33.0 4.7,35.0 4.7,46.0 4.8,41.0 4.8,36.0 4.8,40.0 4.9,48.0 4.9,44.0 5.0,43.0 5.0,42.0 5.0,53.0 5.1,66.0 5.1,62.0 5.1,56.0 5.2,56.0 5.2,52.0 5.3,63.0 5.3,58.0 5.3,50.0 5.4,44.0 5.4,56.0 5.4,52.0 5.5,46.0 5.5,59.0 5.6,54.0 5.6,64.0 5.6,55.0 5.7,50.0 5.7,45.0 5.8,42.0 5.8,41.0 5.8,39.0 5.9,39.0 5.9,34.0 6.0,27.0 6.0,38.0 6.0,34.0 6.0,33.0 6.1,48.0 6.1,45.0 6.1,43.0 6.2,35.0 6.2,31.0 6.3,24.0 6.3,21.0 6.4,33.0 6.4,30.0 6.4,39.0 6.5,43.0 6.5,36.0 6.6,38.0 6.6,34.0 227.8,32.0 227.8,32.0 227.8,31.0 227.9,31.0 227.9,29.0 228.0,29.0 228.0,29.0 228.0,25.0 228.0,25.0 228.1,24.0 228.1,24.0 228.1,24.0 228.2,23.0 228.2,35.0 228.2,33.0 228.3,31.0 228.3,31.0 228.3,30.0 228.4,44.0 228.4,41.0 228.5,37.0 228.5,36.0 228.5,32.0 228.6,30.0 228.6,28.0 228.6,24.0 228.6,23.0 228.7,27.0 228.7,26.0 228.8,37.0 228.8,32.0 228.8,31.0 228.9,30.0 228.9,29.0 229.0,24.0 229.0,23.0 229.1,22.0 229.1,34.0 229.1,28.0 229.2,26.0 229.2,37.0 229.3,33.0 229.3,31.0 229.4,26.0 229.4,21.0 229.4,16.0 229.5,14.0 229.5,10.0 229.6,6.0 229.6,19.0 229.7,17.0 229.7,12.0 229.8,11.0 229.8,17.0 229.8,21.0 229.9,20.0 229.9,16.0 230.0,29.0 230.0,25.0 230.0,24.0 230.2,19.0 295.5,23.0 295.7,27.0 295.7,39.0 295.8,50.0 295.9,45.0 296.0,56.0"/></svg>
+      <span class="rating-dates">Nov 7 – Nov 16 · 136 rated games</span>
+      <details class="rating-milestones"><summary>Milestone games</summary><ul><li><div><strong>First · 3,393</strong><span>Nov 7 · Win · vs @Yegor100</span><a href="https://www.chess.com/game/live/188384299429">Replay on Chess.com</a></div></li><li><div><strong>Peak rating · 3,452</strong><span>Nov 14 · Win · vs @wonderfultime</span><a href="https://www.chess.com/game/live/188993900735">Replay on Chess.com</a></div></li><li><div><strong>Last · 3,402</strong><span>Nov 16 · Loss · vs @legendisback1</span><a href="https://www.chess.com/game/live/187358287768">Replay on Chess.com</a></div></li></ul></details></div></div></article>
+      <article><h2>Your chess nemesis</h2><strong class="performance-leader">@legendisback1</strong><p>26 games against your most-played opponent</p><p>13W · 9L · 4D</p></article>
+      <article><h2>Opening report card</h2><p>Best win rate requires at least 5 games with the same opening and color.</p><ul><li><div><strong>Bishops Opening Berlin Vienna Hybrid Variation</strong> <span>as White</span>
+          <div class="opening-replays"><a href="https://www.chess.com/game/live/186467493722">Replay 1</a> <a href="https://www.chess.com/game/live/188388500845">Replay 2</a></div></div>
+          <div class="opening-score"><strong>78%</strong><span>7W · 1L · 1D · 9 games</span></div></li><li><div><strong>English Opening Four Knights Nimzowitsch Variation</strong> <span>as White</span>
+          <div class="opening-replays"><a href="https://www.chess.com/game/live/188037485477">Replay 1</a> <a href="https://www.chess.com/game/live/188210285769">Replay 2</a></div></div>
+          <div class="opening-score"><strong>78%</strong><span>7W · 1L · 1D · 9 games</span></div></li><li><div><strong>Italian Game Two Knights Modern Bishops Opening</strong> <span>as Black</span>
+          <div class="opening-replays"><a href="https://www.chess.com/game/live/186912826310">Replay 1</a> <a href="https://www.chess.com/game/live/188642299015">Replay 2</a></div></div>
+          <div class="opening-score"><strong>50%</strong><span>4W · 2L · 2D · 8 games</span></div></li><li><div><strong>Caro Kann Defense</strong> <span>as White</span>
+          <div class="opening-replays"><a href="https://www.chess.com/game/live/186588794314">Replay 1</a> <a href="https://www.chess.com/game/live/186589293500">Replay 2</a></div></div>
+          <div class="opening-score"><strong>86%</strong><span>6W · 1L · 0D · 7 games</span></div></li><li><div><strong>Queens Gambit Declined Exchange Positional Line...6.e3 O O</strong> <span>as Black</span>
+          <div class="opening-replays"><a href="https://www.chess.com/game/live/188211486611">Replay 1</a> <a href="https://www.chess.com/game/live/188229485627">Replay 2</a></div></div>
+          <div class="opening-score"><strong>67%</strong><span>4W · 1L · 1D · 6 games</span></div></li><li><div><strong>French Defense Knight Variation Two Knights Variation</strong> <span>as White</span>
+          <span class="opening-best">Best win rate</span><div class="opening-replays"><a href="https://www.chess.com/game/live/188387300725">Replay 1</a> <a href="https://www.chess.com/game/live/188991499617">Replay 2</a></div></div>
+          <div class="opening-score"><strong>100%</strong><span>5W · 0L · 0D · 5 games</span></div></li></ul></article>
+    </section>
+<footer><span>Standard chess · UTC</span><span>Chess Wrapped</span></footer>
+</main>
+</body>
+</html>
